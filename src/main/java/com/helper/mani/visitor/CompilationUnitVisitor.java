@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.antlr.v4.runtime.TokenStream;
+
 import com.helper.mani.domain.CompilationUnit;
 import com.helper.mani.domain.TypeDeclaration;
 import com.helper.mani.grammar.JavaBaseVisitor;
@@ -13,7 +15,11 @@ import com.helper.mani.grammar.JavaParser.PackageDeclarationContext;
 import com.helper.mani.grammar.JavaParser.TypeDeclarationContext;
 
 public class CompilationUnitVisitor extends JavaBaseVisitor<CompilationUnit> {
-	
+	private TokenStream tokens;
+	public CompilationUnitVisitor(TokenStream tokens) {
+		this.tokens = tokens;
+	}
+
 	@Override
 	public CompilationUnit visitCompilationUnit(JavaParser.CompilationUnitContext ctx) {		
 		CompilationUnit cu = new CompilationUnit();
@@ -24,7 +30,7 @@ public class CompilationUnitVisitor extends JavaBaseVisitor<CompilationUnit> {
 			cu.setPackageName(pkg);
 		}
 		List<String> imports = new ArrayList<>(0);
-		ImportDeclarationVisitor imprtVisitor = new ImportDeclarationVisitor();
+		ImportDeclarationVisitor imprtVisitor = new ImportDeclarationVisitor(this.tokens);
 		List<ImportDeclarationContext> imprtsctx = ctx.importDeclaration();
 		if(imprtsctx!=null){
 			imports = imprtsctx.stream()
@@ -36,7 +42,7 @@ public class CompilationUnitVisitor extends JavaBaseVisitor<CompilationUnit> {
 		List<TypeDeclarationContext> typDeclrsCtx = ctx.typeDeclaration();
 		List<TypeDeclaration> typDeclrs = new ArrayList<>(0);
 		if(typDeclrsCtx!=null){
-			TypeDeclarationVisitor visitor = new TypeDeclarationVisitor();
+			TypeDeclarationVisitor visitor = new TypeDeclarationVisitor(this.tokens);
 			typDeclrs = typDeclrsCtx.stream()
 					.filter(t -> t!=null)
 					.map(t -> t.accept(visitor))

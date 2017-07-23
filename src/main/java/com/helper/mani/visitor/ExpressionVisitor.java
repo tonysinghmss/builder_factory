@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import com.helper.mani.grammar.JavaBaseVisitor;
@@ -19,6 +20,11 @@ import com.helper.mani.grammar.JavaParser.TypeParameterContext;
 import com.helper.mani.grammar.JavaParser.TypeTypeContext;
 
 public class ExpressionVisitor extends JavaBaseVisitor<String> {
+	private TokenStream tokens;
+	public ExpressionVisitor(TokenStream tokens) {
+		this.tokens = tokens;
+	}
+
 	public String visitModifier(JavaParser.ModifierContext ctx) {
 		if (ctx.classOrInterfaceModifier() != null) {
 			return this.visitClassOrInterfaceModifier(ctx.classOrInterfaceModifier());
@@ -110,7 +116,6 @@ public class ExpressionVisitor extends JavaBaseVisitor<String> {
 
 	public String visitClassOrInterfaceType(JavaParser.ClassOrInterfaceTypeContext ctx) {
 		StringBuilder clsIntr = new StringBuilder("");
-		//List<TerminalNode> idTns = ctx.Identifier();
 		int n = ctx.getChildCount();
 		for(int i = 0; i < n; i++){
 			

@@ -28,7 +28,7 @@ public class App {
 			ParseTree tree = parser.compilationUnit();
 			//System.out.println(tree.toStringTree(parser));
 			//System.out.println(tree.toStringTree());
-			CompilationUnitVisitor cmpUntVisitor = new CompilationUnitVisitor();
+			CompilationUnitVisitor cmpUntVisitor = new CompilationUnitVisitor(tokens);
 			cmpUntVisitor.visit(tree);
 			//tree.accept(cmpUntVisitor);
 			//System.out.println(a);

@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.antlr.v4.runtime.TokenStream;
+
 import com.helper.mani.domain.Clazz;
 import com.helper.mani.grammar.JavaBaseVisitor;
 import com.helper.mani.grammar.JavaParser;
@@ -14,11 +16,16 @@ import com.helper.mani.grammar.JavaParser.TypeParametersContext;
 import com.helper.mani.grammar.JavaParser.TypeTypeContext;
 
 public class ClassVisitor extends JavaBaseVisitor<Clazz>{
+	private TokenStream tokens;
 	
+	public ClassVisitor(TokenStream tokens) {
+		this.tokens = tokens;
+	}
+
 	public Clazz visitClassDeclaration(JavaParser.ClassDeclarationContext ctx){
 		Clazz clz = new Clazz();
 		clz.setIdentifier(ctx.Identifier().getText());
-		ExpressionVisitor expVisitor = new ExpressionVisitor();
+		ExpressionVisitor expVisitor = new ExpressionVisitor(this.tokens);
 		//Type parameters 
 		TypeParametersContext typPrmsCtx = ctx.typeParameters();
 		if(typPrmsCtx!=null && !typPrmsCtx.isEmpty()){
