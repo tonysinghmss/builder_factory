@@ -153,9 +153,21 @@ public class ExpressionVisitor extends JavaBaseVisitor<String> {
 
 	public String visitTypeArgument(JavaParser.TypeArgumentContext ctx) {
 		//TypeTypeVisitor visitor = new TypeTypeVisitor();
-		TypeTypeContext typTypCtx = ctx.typeType();	
-		//TODO: Check for second rule  '?' (('extends' | 'super') typeType)?
-		 return this.visitTypeType(typTypCtx);
+		StringBuilder typArg = new StringBuilder();
+		if(ctx.getChild(0).getText().equalsIgnoreCase("?")){
+			// '?' (('extends' | 'super') typeType)?
+			typArg.append("?").append(" ");
+			TypeTypeContext typTypCtx = ctx.typeType();
+			if(typTypCtx != null){
+				typArg.append(ctx.getChild(1).getText()).append(" ");
+				typArg.append(this.visitTypeType(typTypCtx));
+			}
+		}
+		else{
+			TypeTypeContext typTypCtx = ctx.typeType();
+			typArg.append(this.visitTypeType(typTypCtx));
+		}
+		return typArg.toString();
 	}
 
 	public String visitQualifiedNameList(JavaParser.QualifiedNameListContext ctx) {
