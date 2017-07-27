@@ -9,6 +9,7 @@ public class Clazz {
 	private List<String> typeParams;
 	private String typeType;
 	private List<String> typeList;
+	private ClassBody classBody;
 	public String getIdentifier() {
 		return identifier;
 	}

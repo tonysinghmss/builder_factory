@@ -9,7 +9,9 @@ import org.antlr.v4.runtime.TokenStream;
 import com.helper.mani.domain.Clazz;
 import com.helper.mani.grammar.JavaBaseVisitor;
 import com.helper.mani.grammar.JavaParser;
+import com.helper.mani.grammar.JavaParser.BlockContext;
 import com.helper.mani.grammar.JavaParser.ClassBodyContext;
+import com.helper.mani.grammar.JavaParser.ClassBodyDeclarationContext;
 import com.helper.mani.grammar.JavaParser.TypeListContext;
 import com.helper.mani.grammar.JavaParser.TypeParameterContext;
 import com.helper.mani.grammar.JavaParser.TypeParametersContext;
@@ -51,7 +53,17 @@ public class ClassVisitor extends JavaBaseVisitor<Clazz>{
 		}
 		ClassBodyContext clsBdyCtx = ctx.classBody();
 		if(clsBdyCtx!=null){
-			System.out.println(clsBdyCtx.getText());
+			List<ClassBodyDeclarationContext> clsBodyDeclarationList = clsBdyCtx.classBodyDeclaration();
+			for(ClassBodyDeclarationContext cbdCtx : clsBodyDeclarationList){
+				/*int n = cbdCtx.getChildCount();
+				BlockContext blockCtx = cbdCtx.block();
+				StringBuilder blockBuilder = new StringBuilder();
+				if(n==2 && blockCtx!=null){
+					blockBuilder.append("static");
+					
+				}*/
+				
+			}
 		}
 		//System.out.println(clz);
 		return null;
